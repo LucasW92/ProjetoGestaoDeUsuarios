@@ -1,0 +1,70 @@
+@baseUrl = https://localhost:7200
+@adminEmail = admin@gestaodousuario.dev
+@adminPassword = Admin@123
+@accessToken = 
+@refreshToken = 
+@userId = 
+
+### Cadastrar usuario
+POST {{baseUrl}}/api/identity/register
+Content-Type: application/json
+
+{
+  "nome": "Maria Silva",
+  "email": "maria.silva@empresa.com",
+  "password": "Senha@123",
+  "confirm_password": "Senha@123"
+}
+
+### Fazer login e copiar access_token / refresh_token de dados_resposta
+POST {{baseUrl}}/api/identity/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+### Renovar token
+POST {{baseUrl}}/api/identity/refresh
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "access_token": "{{accessToken}}",
+  "refresh_token": "{{refreshToken}}"
+}
+
+### Criar usuario gerenciado
+POST {{baseUrl}}/api/users/
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "nome": "Joao Souza",
+  "email": "joao.souza@empresa.com",
+  "password": "Senha@123",
+  "confirm_password": "Senha@123"
+}
+
+### Listar usuarios
+GET {{baseUrl}}/api/users/?page=1&pageSize=10
+Authorization: Bearer {{accessToken}}
+
+### Buscar usuario por id
+GET {{baseUrl}}/api/users/{{userId}}
+Authorization: Bearer {{accessToken}}
+
+### Atualizar usuario
+PUT {{baseUrl}}/api/users/{{userId}}
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "nome": "Joao Pedro Souza",
+  "email": "joao.pedro@empresa.com"
+}
+
+### Desativar usuario
+PATCH {{baseUrl}}/api/users/{{userId}}/deactivate
+Authorization: Bearer {{accessToken}}

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="Domain/GestaoDeUsuarios.Domain.csproj" />
+    <Project Path="Application/GestaoDeUsuarios.Application.csproj" />
+    <Project Path="Infrastructure/GestaoDeUsuarios.Infrastructure.csproj" />
+    <Project Path="Api/GestaoDeUsuarios.Api.csproj" />
+  </Folder>
+  <Folder Name="/aspire/">
+    <Project Path="AppHost/GestaoDeUsuarios.AppHost.csproj" />
+    <Project Path="ServiceDefaults/GestaoDeUsuarios.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="../tests/Architecture.Tests/GestaoDeUsuarios.Architecture.Tests.csproj" />
+    <Project Path="../tests/Application.UnitTests/GestaoDeUsuarios.Application.UnitTests.csproj" />
+    <Project Path="../tests/Api.IntegrationTests/GestaoDeUsuarios.Api.IntegrationTests.csproj" />
+  </Folder>
+</Solution>

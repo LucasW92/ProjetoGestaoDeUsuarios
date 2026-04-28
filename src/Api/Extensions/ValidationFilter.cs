@@ -1,0 +1,31 @@
+using FluentValidation;
+
+namespace GestaoDeUsuarios.Api.Extensions;
+
+public sealed class ValidationFilter<T>(IValidator<T> validator) : IEndpointFilter where T : class
+{
+    public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next)
+    {
+        var argument = context.Arguments.OfType<T>().FirstOrDefault();
+        if (argument is null)
+            return await next(context);
+
+        var validationResult = await validator.ValidateAsync(argument);
+        if (validationResult.IsValid)
+            return await next(context);
+
+        var errors = validationResult.Errors
+            .GroupBy(e => e.PropertyName)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(e => e.ErrorMessage).ToArray());
+
+        return ApiHttpResults.BadRequest(
+            context.HttpContext,
+            new
+            {
+                Mensagem = "Falha de validação.",
+                Erros = errors
+            });
+    }
+}
