@@ -125,8 +125,11 @@ try
 catch (Exception ex) when (ex is not HostAbortedException)
 {
     Log.Fatal(ex, "A aplicação foi encerrada inesperadamente");
+    throw;
 }
 finally
 {
     await Log.CloseAndFlushAsync();
 }
+
+public partial class Program;

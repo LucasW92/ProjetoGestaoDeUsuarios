@@ -15,6 +15,16 @@ namespace GestaoDeUsuarios.Api.IntegrationTests;
 public sealed class ApiWebApplicationFactory : WebApplicationFactory<Program>
 {
     private readonly string _databaseName = $"api-integration-tests-{Guid.NewGuid()}";
+    private readonly string? _originalEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+    private readonly string? _originalConnectionString = Environment.GetEnvironmentVariable("ConnectionStrings__gestao-de-usuarios");
+
+    public ApiWebApplicationFactory()
+    {
+        Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Testing");
+        Environment.SetEnvironmentVariable(
+            "ConnectionStrings__gestao-de-usuarios",
+            "Host=localhost;Database=gestao_test;Username=test;Password=test");
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -47,6 +57,17 @@ public sealed class ApiWebApplicationFactory : WebApplicationFactory<Program>
                 })
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(TestAuthHandler.SchemeName, _ => { });
         });
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", _originalEnvironment);
+            Environment.SetEnvironmentVariable("ConnectionStrings__gestao-de-usuarios", _originalConnectionString);
+        }
+
+        base.Dispose(disposing);
     }
 
     public async Task<ApplicationUser> CriarUsuarioAsync(string nome, string email, bool ativo = true)
