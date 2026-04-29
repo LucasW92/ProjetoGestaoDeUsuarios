@@ -86,7 +86,6 @@ try
 
     var app = builder.Build();
 
-    // Global exception handler
     app.UseExceptionHandler();
     app.UseStatusCodePages();
     app.UseMiddleware<ResponseTimingMiddleware>();
@@ -101,6 +100,8 @@ try
             options.WithTheme(ScalarTheme.BluePlanet);
             options.WithDefaultHttpClient(ScalarTarget.Shell, ScalarClient.Curl);
         });
+
+        app.MapDiagnosticsEndpoints();
     }
 
     app.UseAuthentication();
@@ -114,7 +115,6 @@ try
     // Aspire default endpoints (health, alive)
     app.MapDefaultEndpoints();
 
-    // Seed database in development
     if (app.Environment.IsDevelopment())
     {
         await AppDbSeeder.SeedAsync(app.Services);

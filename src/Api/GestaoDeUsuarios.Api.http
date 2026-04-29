@@ -25,6 +25,15 @@ Content-Type: application/json
   "password": "{{adminPassword}}"
 }
 
+### Fazer login não admin e copiar access_token / refresh_token de dados_resposta
+POST {{baseUrl}}/api/identity/login
+Content-Type: application/json
+
+{
+  "email": "maria.silva@empresa.com",
+  "password": "Senha@123"
+}
+
 ### Renovar token
 POST {{baseUrl}}/api/identity/refresh
 Content-Type: application/json
@@ -68,3 +77,6 @@ Authorization: Bearer {{accessToken}}
 ### Desativar usuario
 PATCH {{baseUrl}}/api/users/{{userId}}/deactivate
 Authorization: Bearer {{accessToken}}
+
+### Disparar excecao nao tratada
+GET {{baseUrl}}/api/diagnostics/throw
